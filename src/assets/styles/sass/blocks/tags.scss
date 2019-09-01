@@ -1,0 +1,45 @@
+.tags {
+  width: 100%;
+  margin-top: 30px;
+  font-size: 14px;
+}
+
+.tags__inner {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.tag {
+  padding: 5px;
+  margin: 5px;
+  border: 1px solid $gray;
+  border-radius: $radius_sm;
+
+  &.active {
+    background-color: $grass_green;
+    color: $white;
+  }
+
+  &:hover {
+    background-color: $green;
+  }
+}
+
+.tag__item {
+  display: flex;
+  cursor: pointer;
+}
+
+/*.tag:hover {
+  background-color: #0087a0;
+}*/
+
+.tag__link {
+  text-decoration: none;
+  color: $black;
+
+  &:hover {
+    color: $white;
+  }
+}
