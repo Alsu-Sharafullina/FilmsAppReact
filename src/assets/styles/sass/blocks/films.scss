@@ -1,17 +1,13 @@
-.content {
+/*.content {
   margin: 30px 0;
-}
+}*/
 
 .film__item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid $black;
-  border-bottom: none;
-
-  &:last-child {
-    border-bottom: 1px solid $black;
-  }
+  border: 1px solid $gray;
+  margin-bottom: 10px;
 }
 
 .film__name {
@@ -21,13 +17,12 @@
 .film__icon {
   width: 50px;
   height: 50px;
-  border-left: 1px solid $black;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.star__icon {
+.unbookmark__icon {
   display: block;
   height: 23px;
 
@@ -35,4 +30,64 @@
     fill: $red;
     cursor: pointer;
   }
+}
+
+.results__title {
+  text-align: center;
+  padding-bottom: 20px;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.films__tags {
+  margin-left: 85px;
+  padding-top: 8px;
+}
+
+.arrow__img {
+  width: 20px;
+  height: 15px;
+  padding-top: 3px;
+}
+
+.film__reset__link {
+  margin: 15px;
+}
+
+.reset__link {
+  text-decoration: none;
+  color: $gray;
+
+  &:hover {
+    color: $green;
+    text-decoration: underline;
+  }
+}
+
+.film__link {
+  text-decoration: none;
+  color: $gray;
+}
+
+.film__img {
+  width: 170px;
+  height: 230px;
+  background-color: $pink;
+}
+
+.film__card {
+  margin-left: 30px;
+}
+
+.current_film_item {
+  display: flex;
+}
+
+.film__info {
+  margin-left: 40px;
+}
+
+.current_film_title {
+  padding-bottom: 3rem;
+  font-size: 20px;
 }

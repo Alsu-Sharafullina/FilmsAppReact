@@ -11,6 +11,7 @@ class App extends Component {
         this.state = {
             current_tab : "films", // текущий выбранный Таб
             tags : [], // массив всех тегов
+            current_film : null, // текущий фильм
             films : [], // массив всех фильмов
             filteredItems : [], // массив отфильтрованных фильмов (и по тегам, и по поиску)
             tag : "",
@@ -22,16 +23,26 @@ class App extends Component {
         };
 
         this.onChangeTab = this.onChangeTab.bind(this);
+        this.reset = this.reset.bind(this);
         this.onInputChange = this.onInputChange.bind(this);
         this.onFilterTags = this.onFilterTags.bind(this);
+        this.resetCurrentFilm = this.resetCurrentFilm.bind(this);
+        this.setFilm = this.setFilm.bind(this);
+        this.getFilm = this.getFilm.bind(this);
         this.onAddBookmarks = this.onAddBookmarks.bind(this);
+    }
+
+    resetCurrentFilm(event){
+        event.preventDefault();
+        this.setState({
+            current_film : null
+        });
     }
 
     /* Обработка клика по разделам Фильмы/Закладки */
     onChangeTab(event) {
         const data = event.target.getAttribute('data-info');
         let current_tab = data;
-
         this.setState({
             current_tab : data,
         }, function () {
@@ -41,16 +52,17 @@ class App extends Component {
 
     /* Обработка поисковых запросов */
     onInputChange(event) {
-        const query = event.target.value;
+        event.preventDefault();
+        const query = document.getElementById("searchTxt").value;
 
         this.setState({
             query : query
         }, function () {
+
             this.filterItems();
         });
 
     }
-
 
     /* Обработка клика по тегам */
     onFilterTags(event) {
@@ -108,7 +120,7 @@ class App extends Component {
 
     };
 
-    /* Обработка клика по звезде, добавление фильмов в список закладок */
+    /* добавление фильмов в список закладок */
     onAddBookmarks (event) {
         let filmTitle = event.target.title;
 
@@ -125,6 +137,33 @@ class App extends Component {
 
         localStorage.setItem('bookmarks__list', JSON.stringify(this.state.bookmarks));
 
+    }
+
+    reset(){
+        this.setState({
+            query : "",
+            current_tags : {},
+        });
+        document.getElementById("searchTxt").value = "";
+    }
+
+    setFilm(event){
+        event.preventDefault();
+
+        const title = event.target.getAttribute("data-film-id");
+        const film = this.getFilm(title);
+        this.setState({
+            current_film : film
+        });
+
+    }
+
+    getFilm(title){
+        for (let i = 0; i < this.state.films.length; i++) {
+            if (this.state.films[i].title === title) {
+                return this.state.films[i];
+            }
+        }
     }
 
     componentDidMount() {
@@ -164,35 +203,52 @@ class App extends Component {
         return (
 
             <div>
+                {(Object.keys(this.state.current_tags).length != 0 || this.state.query != "") && this.state.current_film == null ?
 
-            <div className="header">
-                <div className="container">
-                    <div className="header__inner">
+                    <div className="film__reset__link" onClick={this.reset}>
+                        <img className="arrow__img" src="assets/img/left-arrow-button.svg" alt=""/>
+                        <span href="" className="reset__link" >Назад</span>
+                    </div> : null }
 
-                            <div className={this.state.current_tab == "films" ? "films header__link active" : "films header__link"}
-                                 data-info="films" onClick={this.onChangeTab}>
-                                <a className="films__link" href="#" data-info="films" onClick={this.onChangeTab}>Фильмы</a>
+                {this.state.current_film == null ?
+                    <div>
+                        {this.state.current_tab == "films" ? <div className="search">
+                                <div className="container">
+                                    <div className="search__inner">
+                                        <form action="#" className="search__form" onSubmit={this.onInputChange}>
+                                            <input type="search" id="searchTxt" className="form-control" placeholder="Поиск"/>
+                                            <button type="submit" className="search__item">
+                                                <img className="search__icon" src="assets/img/search__icon.svg" alt=""/>
+                                            </button>
+                                        </form>
+                                    </div>
+
+                                    <div className="films__tags">
+                                        {Object.keys(this.state.current_tags).map((tag, tag_index) =>
+                                            <span className="current__tags" key={tag_index}>#{tag}</span>
+                                        )}
+
+                                    </div>
+                                </div>
                             </div>
+                            : null}
+                        <div className="header">
+                            <div className="container">
+                                <div className="header__inner">
+                                    <div className={this.state.current_tab == "films" ? "films header__link active" : "films header__link"}
+                                         data-info="films" onClick={this.onChangeTab}>
+                                        <a className="films__link" href="#" data-info="films" onClick={this.onChangeTab}>Фильмы</a>
+                                    </div>
 
-                            <div className={this.state.current_tab == "bookmarks" ? "bookmarks header__link active" : "bookmarks header__link"}                                     data-info="bookmarks" onClick={this.onChangeTab}>
-                                <a className="bookmarks__link" href="#" data-info="bookmarks" onClick={this.onChangeTab}>Закладки</a>
+                                    <div className={this.state.current_tab == "bookmarks" ? "bookmarks header__link active" : "bookmarks header__link"}                                     data-info="bookmarks" onClick={this.onChangeTab}>
+                                        <a className="bookmarks__link" href="#" data-info="bookmarks" onClick={this.onChangeTab}>Закладки</a>
+                                    </div>
+                                </div>
                             </div>
+                        </div>
 
-                    </div>
-                </div>
-            </div>
 
-            {this.state.current_tab == "films" ? <div className="search">
-                <div className="container">
-                    <div className="search__inner">
-                        <form action="#" className="search__form">
-                            <input type="search" className="form-control" placeholder="Поиск" onChange={this.onInputChange}/>
-                        </form>
-                    </div>
-                </div>
-            </div> : null}
-
-            {this.state.current_tab == "films" ? <div className="tags">
+                        {/*{this.state.current_tab == "films" ? <div className="tags">
                 <div className="container">
                     <div className="tags__inner">
                         {this.state.tags.map((item, index) =>
@@ -205,16 +261,42 @@ class App extends Component {
                         )}
                     </div>
                 </div>
-            </div> : null}
+            </div> : null}*/}
 
-            <div className="content">
-                <div className="container">
-                    {this.state.current_tab == "films" ? <Films bookmarks={this.state.bookmarks} items={this.state.filteredItems}
-                        title={this.state.item} ClickStar={this.onAddBookmarks}/> :
-                    <Bookmarks bookmarks={this.state.bookmarks} items={this.state.filteredItems} title={this.state.item}
-                        ClickStar={this.onAddBookmarks} />}
-                </div>
-            </div>
+                        <div className="content">
+                            <div className="container">
+                                {Object.keys(this.state.current_tags).length != 0 || this.state.query != "" ? <h3 className="results__title">Результаты поиска</h3> : null }
+
+
+                                {this.state.current_tab == "films" ? <Films
+                                        setFilm={this.setFilm}
+                                        bookmarks={this.state.bookmarks}
+                                        items={this.state.filteredItems}
+                                        title={this.state.item}
+                                        current_tags={this.state.current_tags}
+                                        onFilterTags={this.onFilterTags}
+                                        ClickStar={this.onAddBookmarks}/> :
+                                    <Bookmarks bookmarks={this.state.bookmarks} items={this.state.filteredItems} title={this.state.item}
+                                               ClickStar={this.onAddBookmarks} />}
+                            </div>
+                        </div>
+                    </div>
+
+                    : <div className="film__card">
+                        <div className="film__reset__link" onClick={this.resetCurrentFilm}>
+                            <img className="arrow__img" src="assets/img/left-arrow-button.svg" alt=""/>
+                            <a className="reset__link" href="">Назад</a></div>
+                        <div className="current_film_item">
+                            <div className="film__img"></div>
+                            <div className="film__info">
+                                <div className="current_film_title">{this.state.current_film.title}</div>
+
+                                {this.state.bookmarks[this.state.current_film.title] ? <button onClick={this.onAddBookmarks} className="deleteBookmarks" title={this.state.current_film.title}>Удалить с закладок</button> : <button className="addBookmarks" title={this.state.current_film.title} onClick={this.onAddBookmarks}>Добавить в закладки</button>}
+                            </div>
+
+                        </div>
+
+                    </div>}
 
             </div>
         );

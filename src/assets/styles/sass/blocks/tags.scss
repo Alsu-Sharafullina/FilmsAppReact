@@ -1,6 +1,6 @@
+/*
 .tags {
   width: 100%;
-  margin-top: 30px;
   font-size: 14px;
 }
 
@@ -30,11 +30,13 @@
   display: flex;
   cursor: pointer;
 }
+*/
 
 /*.tag:hover {
   background-color: #0087a0;
 }*/
 
+/*
 .tag__link {
   text-decoration: none;
   color: $black;
@@ -43,3 +45,28 @@
     color: $white;
   }
 }
+*/
+
+.tag__name, .current__tags {
+  margin-right: 1em;
+  padding: 5px 12px 5px;
+
+  font-size: 12px;
+  cursor: pointer;
+
+  background-color: $gray_dark;
+  color: $white;
+  border-radius: $radius_10;
+
+  &.active {
+    background-color: $grass_green;
+    color: $white;
+  }
+
+  &:hover {
+    background-color: $pink;
+    color: $white;
+  }
+
+}
+

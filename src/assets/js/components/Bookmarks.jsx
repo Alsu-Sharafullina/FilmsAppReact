@@ -4,7 +4,7 @@ class Bookmarks extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            limit: 15,
+            limit: 10,
             offset: 0,
             bookmarks : this.props.bookmarks,
             items : [],
@@ -15,7 +15,7 @@ class Bookmarks extends Component {
 
     onShowNextFilms(){
         this.setState({
-            limit : this.state.limit + 15,
+            limit : this.state.limit + 10,
         })
     }
 
@@ -36,13 +36,13 @@ class Bookmarks extends Component {
                         <div className="bookmarks__item" key={index}>
                             <div className="bookmarks__name" key={index}>{this.props.bookmarks[item]}</div>
                             <div className="bookmarks__icon">
-                                <img src="assets/img/star2.png" title={this.props.bookmarks[item]} onClick={this.onBookmarksDel} alt=""/>
+                                <img className="bookmark__icon" src="assets/img/bookmark2.svg" title={this.props.bookmarks[item]} onClick={this.onBookmarksDel} alt=""/>
                             </div>
                         </div>
                     )}
             </div>
             {this.state.limit <bookmarksTitle.length ? <div className="btn">
-                <button onClick={this.onShowNextFilms}><a>Показать больше</a></button></div> : null}
+                <button className="films__button" onClick={this.onShowNextFilms}><a>Показать больше</a></button></div> : null}
             </div>
         )
     }
