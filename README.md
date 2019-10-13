@@ -1,1 +1,5 @@
-# FilmsAppReact
+Для запуска проекта в терминале необходимо ввести команды:
+
+npm install
+
+npm start
