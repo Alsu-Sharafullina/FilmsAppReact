@@ -31,11 +31,13 @@
   top: 0;
   right: 0;
   cursor: pointer;
+  outline: none;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  background: $white;
 
+  background: $white;
   border: 1px solid $light_gray;
 }
 

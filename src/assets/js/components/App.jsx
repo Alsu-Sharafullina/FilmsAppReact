@@ -143,6 +143,7 @@ class App extends Component {
         this.setState({
             query : "",
             current_tags : {},
+            filteredItems : this.state.films,
         });
         document.getElementById("searchTxt").value = "";
     }
@@ -265,7 +266,7 @@ class App extends Component {
 
                         <div className="content">
                             <div className="container">
-                                {Object.keys(this.state.current_tags).length != 0 || this.state.query != "" ? <h3 className="results__title">Результаты поиска</h3> : null }
+                                {(Object.keys(this.state.current_tags).length != 0 || this.state.query != "") && this.state.current_tab == "films" ? <h3 className="results__title">Результаты поиска</h3> : null }
 
 
                                 {this.state.current_tab == "films" ? <Films
