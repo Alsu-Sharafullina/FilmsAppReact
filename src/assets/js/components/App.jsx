@@ -2,6 +2,8 @@ import React, { Component } from "react";
 
 import Films from './Films.jsx'
 import Bookmarks from './Bookmarks.jsx'
+import Search from './Search.jsx'
+import FilmCard from './FilmCard.jsx'
 
 import '../../styles/sass/style.scss';
 
@@ -58,7 +60,6 @@ class App extends Component {
         this.setState({
             query : query
         }, function () {
-
             this.filterItems();
         });
 
@@ -179,8 +180,6 @@ class App extends Component {
                     films : json,
                     filteredItems : json,
 
-                }, function () {
-
                 });
 
             })
@@ -191,8 +190,6 @@ class App extends Component {
             .then(json => {
                 this.setState({
                     tags : json,
-                }, function () {
-
                 });
 
             })
@@ -203,7 +200,8 @@ class App extends Component {
 
         return (
 
-            <div>
+            <React.Fragment>
+
                 {(Object.keys(this.state.current_tags).length != 0 || this.state.query != "") && this.state.current_film == null ?
 
                     <div className="film__reset__link" onClick={this.reset}>
@@ -213,26 +211,16 @@ class App extends Component {
 
                 {this.state.current_film == null ?
                     <div>
-                        {this.state.current_tab == "films" ? <div className="search">
+                        {this.state.current_tab == "films" ?
                                 <div className="container">
-                                    <div className="search__inner">
-                                        <form action="#" className="search__form" onSubmit={this.onInputChange}>
-                                            <input type="search" id="searchTxt" className="form-control" placeholder="Поиск"/>
-                                            <button type="submit" className="search__item">
-                                                <img className="search__icon" src="assets/img/search__icon.svg" alt=""/>
-                                            </button>
-                                        </form>
-                                    </div>
-
+                                    <Search change={this.onInputChange} />
                                     <div className="films__tags">
                                         {Object.keys(this.state.current_tags).map((tag, tag_index) =>
                                             <span className="current__tags" key={tag_index}>#{tag}</span>
                                         )}
-
                                     </div>
-                                </div>
-                            </div>
-                            : null}
+                                </div> : null}
+
                         <div className="header">
                             <div className="container">
                                 <div className="header__inner">
@@ -241,33 +229,17 @@ class App extends Component {
                                         <a className="films__link" href="#" data-info="films" onClick={this.onChangeTab}>Фильмы</a>
                                     </div>
 
-                                    <div className={this.state.current_tab == "bookmarks" ? "bookmarks header__link active" : "bookmarks header__link"}                                     data-info="bookmarks" onClick={this.onChangeTab}>
+                                    <div className={this.state.current_tab == "bookmarks" ? "bookmarks header__link active" :
+                                        "bookmarks header__link"} data-info="bookmarks" onClick={this.onChangeTab}>
                                         <a className="bookmarks__link" href="#" data-info="bookmarks" onClick={this.onChangeTab}>Закладки</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-
-                        {/*{this.state.current_tab == "films" ? <div className="tags">
-                <div className="container">
-                    <div className="tags__inner">
-                        {this.state.tags.map((item, index) =>
-                        <div className="tag__item" key={index} >
-                            <span className={this.state.current_tags[item] == true ? "tag active" : "tag"} key={index} name={item}
-                                  onClick={this.onFilterTags} >
-                                <a href="#" className="tag__link" name={item} >{item}</a>
-                            </span>
-                                </div>
-                        )}
-                    </div>
-                </div>
-            </div> : null}*/}
-
                         <div className="content">
                             <div className="container">
                                 {(Object.keys(this.state.current_tags).length != 0 || this.state.query != "") && this.state.current_tab == "films" ? <h3 className="results__title">Результаты поиска</h3> : null }
-
 
                                 {this.state.current_tab == "films" ? <Films
                                         setFilm={this.setFilm}
@@ -282,24 +254,13 @@ class App extends Component {
                             </div>
                         </div>
                     </div>
+                    : <FilmCard reset={this.resetCurrentFilm}
+                                bookmarks={this.state.bookmarks}
+                                film={this.state.current_film}
+                                delBookmark={this.onAddBookmarks}
+                                addedBookmark={this.onAddBookmarks} /> }
 
-                    : <div className="film__card">
-                        <div className="film__reset__link" onClick={this.resetCurrentFilm}>
-                            <img className="arrow__img" src="assets/img/left-arrow-button.svg" alt=""/>
-                            <a className="reset__link" href="">Назад</a></div>
-                        <div className="current_film_item">
-                            <div className="film__img"></div>
-                            <div className="film__info">
-                                <div className="current_film_title">{this.state.current_film.title}</div>
-
-                                {this.state.bookmarks[this.state.current_film.title] ? <button onClick={this.onAddBookmarks} className="deleteBookmarks" title={this.state.current_film.title}>Удалить с закладок</button> : <button className="addBookmarks" title={this.state.current_film.title} onClick={this.onAddBookmarks}>Добавить в закладки</button>}
-                            </div>
-
-                        </div>
-
-                    </div>}
-
-            </div>
+            </React.Fragment>
         );
     }
 }

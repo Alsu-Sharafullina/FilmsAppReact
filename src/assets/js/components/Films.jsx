@@ -28,7 +28,8 @@ class Films extends Component {
         let films = this.props.items.slice(this.state.offset, this.state.limit);
         return (
 
-            <div>
+        <React.Fragment>
+
             <div className="films__content">
                 {films.map((item, index) =>
                     <div className="film__item" key={index}>
@@ -39,15 +40,18 @@ class Films extends Component {
                         )}</div>
                         <div className="film__icon">
                             {this.state.bookmarks[item.title] ?
-                                <img className="bookmark__icon" src="assets/img/bookmark2.svg" title={item.title} onClick={this.onBookmarksAdd} alt=""/> :
-                                <img className="unbookmark__icon" src="assets/img/bookmark1.svg" title={item.title} onClick={this.onBookmarksAdd} alt="" />}
+                                <img className="bookmark__icon" src="assets/img/bookmark2.svg" title={item.title}
+                                     onClick={this.onBookmarksAdd} alt=""/> :
+                                <img className="unbookmark__icon" src="assets/img/bookmark1.svg" title={item.title}
+                                     onClick={this.onBookmarksAdd} alt="" />}
                         </div>
                     </div>
                 )}
             </div>
             {this.state.limit < this.props.items.length ? <div className="btn">
                 <button className="films__button" onClick={this.onShowNextFilms}><a>Показать больше</a></button></div> : null}
-            </div>
+
+            </React.Fragment>
         )
     }
 }
